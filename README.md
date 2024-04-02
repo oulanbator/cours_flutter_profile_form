@@ -6,10 +6,25 @@ Un TP pour voir différents concepts clés dans Flutter :
 - L'implémentation d'un image picker
 - La communication avec une API pour enregistrer des données & des fichiers
 
-Nous nous servons ici d'une API que j'ai mise en place avec le BaaS (Backend as a Service) Directus sur mon serveur personnel.
+Nous nous servons ici d'une API que j'ai mise en place avec le BaaS **Directus** (Backend as a Service) sur mon serveur personnel.
 
 Les principaux fichiers de l'application sont déjà créés pour simplifier la tâche. La partie **fetch** de la classe ProfilService est déjà implémentée, pour récupérer les profils et les afficher dans l'écran Home.
 
+## Setup
+
+- Clonez le projet
+
+- Ajout des packages de base
+```
+flutter pub get
+```
+
+- Ajout de la platforme cible de dev, p.ex pour android
+```
+flutter create --platforms=android .
+```
+
+> Pensez à supprimer le dossier /test après cette commande
 
 ## Exercice 1 - Créer le formulaire "Nouveau profil"
 
