@@ -19,9 +19,19 @@ Les valeurs obligatoires sont :
 - email (format email valide)
 - presentation (20 caractères minimum)
 
-Mettez en place le formulaire, ainsi que la validation des champs obligatoires. Le formulaire contiendra également un bouton submit. Le formulaire ne devrait pas pouvoir être soumis s'il n'est pas valide.
+> J'ai adapté la classe "Profil" pour forcer les champs requis en **final**, ils doivent donc être renseignés (d'ailleurs l'API n'acceptera pas que ces champs soient null). Mais ils pourraient être saisis par l'utilisateur comme chaine de caractères vide ou non valide. C'est donc bien au Front (l'app Flutter donc) de mettre en place le premier niveau de validation des champs du formulaire.
 
-> J'ai adapté la classe "Profil" pour forcer les champs requis en final. Ils doivent donc être renseignés et l'API n'acceptera pas que ces champs soient null, mais vous pourriez les saisir comme chaine de caractères vide. C'est donc bien au Front (l'app Flutter donc) de mettre en place le premier niveau de validation des champs du formulaire.
+Mettez en place le formulaire : 
+- Mettre en place l'écran et le Form (penser à la GlobalKey)
+- Mettre en place les différents inputs
+- Implémenter la validation des champs obligatoires. 
+- Le formulaire contiendra également un bouton pour la soumission du formulaire
+
+> Je vous conseille d'implémenter une méthode **_sumitForm()** en dehors des éléments de la vue. 
+
+- Le formulaire ne devrait pas pouvoir être soumis s'il n'est pas valide.
+- Pour le moment, faire un print des valeurs dans la fonction **_submitForm()** si le formulaire est valide.
+
 
 ## Exercice 2 - Mettez en place la logique pour envoyer le formulaire
 
