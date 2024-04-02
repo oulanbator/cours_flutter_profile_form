@@ -197,4 +197,13 @@ Implémenter la logique pour enregistrer l'image :
 ```
 - Passer cette url dans la clé "image" du profil à enregistrer avant de l'envoyer sur l'API.
 
-Bonus : La soumission du formulaire commence à être longue, ça pourrait être bien de désactiver le bouton valider, ou le remplacer par un spinner une fois cliqué. Comment faire ?
+Bonus : La soumission du formulaire commence à être longue, ça pourrait être bien de désactiver le bouton valider, pour éviter que l'utilisateur puisse appuyer à nouveau dessus avant la fin du processus. Comment faire ?
+
+## Exercice 5 - Page de détails
+
+Implémentez une page de détails pour chaque profil, ainsi que la navigation depuis la page Home :
+- Sur la page Home, les **ListTile** indiquent uniquement le nom, prénom et email du profil.
+- Sur la page de détails, on retrouve la photo de profil ainsi que les différentes informations associées (nom, prénom, email, présentation)
+
+#### Tips :
+> Si besoin, aidez-vous des éléments vus dans [le TP Rick & Morty](https://github.com/oulanbator/cours_flutter_rick_et_morty)
