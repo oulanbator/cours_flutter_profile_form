@@ -32,6 +32,10 @@ Mettez en place le formulaire :
 - Le formulaire ne devrait pas pouvoir être soumis s'il n'est pas valide.
 - Pour le moment, faire un print des valeurs dans la fonction **_submitForm()** si le formulaire est valide.
 
+#### Tips :
+> Si besoin, aidez-vous des éléments vu dans [la démo sur les formulaires](https://github.com/oulanbator/cours_flutter_text_field)
+
+
 
 ## Exercice 2 - Mettez en place la logique pour envoyer le formulaire
 
@@ -74,3 +78,18 @@ if (response.statusCode == 200) {
 
 > Ici, je vous aide pour l'implémentation, mais pensez à utiliser un client HTTP pour tester le comportement d'une API (url ? body attendu ? headers ? réponses ?) avant de vous lancer dans le code. Vous éviterez beaucoup de difficultés et de debugs difficiles.
 
+#### Tips :
+> Si besoin, aidez-vous des éléments vu dans [le TP sur le mini tchat](https://github.com/oulanbator/cours_flutter_mini_tchat)
+
+## Exercice 3 - Ajoutez un image picker au formulaire
+
+Vous devez également ajouter une image pour chaque profil. Cela recouvre plusieurs aspect. D'un point de vue UI, il vous faut implémenter un image picker pour que l'utilisateur puisse sélectionner une image de sa galerie ou prendre une photo avec sa camera.
+Ensuite, il faudra sauvegarder cette image sur l'API. Nous verrons cela dans l'exercice suivant.
+
+Implémentez un image picker et affichez l'image sélectionnée en tête du formulaire. Pour faire simple, disons qu'on ne souhaite pas pouvoir modifier l'image une fois sélectionnée :
+- Ajoutez unne propriété pour stocker votre image (de type **File?** puisque par défaut elle est égale à **null**)
+- Si l'image n'est pas sélectionnée, afficher un IconButton pour ouvrir l'image picker
+- Si l'image est sélectionnée, afficher l'image
+
+#### Tips :
+> Si besoin, aidez-vous des éléments vus dans [la démo d'image picker](https://github.com/oulanbator/demo_imagepicker) 
