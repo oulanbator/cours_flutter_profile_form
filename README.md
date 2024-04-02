@@ -105,3 +105,96 @@ flutter pub add image_picker
 flutter clean
 flutter pub get
 ```
+
+## Exercice 4 - Envoi de l'image vers l'API
+
+Cette dernière étape doit se faire en deux partie :
+- Envoi de l'image dans le storage Directus, et récupération de l'id pour construire l'url de l'image
+- Construction de l'url et ajout aux données du Profil avant d'enregistrer le profil à proprement parler
+
+Ajouter le package http_parser à votre projet (il va nous donner accès à l'objet MediaType) :
+```
+flutter pub add http_parser
+```
+
+Ajouter les lignes suivante à vos constantes :
+```
+static String uriFileTransfert = "$apiBaseUrl/files";
+static String uriAssets = "$apiBaseUrl/assets";
+```
+
+Ajouter le service pour envoyer votre image vers l'API de Directus. Ce n'est pas une implémentation facile à trouver, donc je vous donne le code :
+```
+import 'dart:convert';
+import 'dart:io';
+import 'package:cours_flutter_profile_form/constants.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+
+class FileTransferService {
+  /// Renvoie l'id de l'image téléversée, ou null en cas d'échec
+  Future<String?> uploadPicture(File picture, String title) async {
+    final fileBytes = await picture.readAsBytes();
+    // C'est une bonne pratique d'avoir un timestamp dans le nom d'une image
+    final filename = "${title}_${DateTime.now().millisecondsSinceEpoch}.jpg";
+
+    // Préparation de la requête à envoyer
+    final request =
+        http.MultipartRequest('POST', Uri.parse(Constants.uriFileTransfert))
+          ..fields['title'] = title
+          ..files.add(http.MultipartFile.fromBytes(
+            'file',
+            fileBytes,
+            filename: filename,
+            contentType: MediaType.parse("image/jpeg"),
+          ));
+
+    // Envoi de la requête
+    final response = await request.send();
+
+    // Renvoie l'id de l'image si la requête réussit, sinon null
+    if (response.statusCode == 200) {
+      final responseBody = await response.stream.bytesToString();
+      Map<String, dynamic> decodedBody = jsonDecode(responseBody);
+      Map<String, dynamic> data = decodedBody['data'];
+      return data['id'];
+    } else {
+      print("Bad response. Status code : ${response.statusCode}");
+      return null;
+    }
+  }
+}
+```
+
+Dans la méthode **pickImage** du formulaire de profil, baisser la qualité des images sélectionnées :
+```
+.pickImage(
+  source: source,
+  maxHeight: 1000,
+  maxWidth: 1000,
+  imageQuality: 50, // Ici
+)
+```
+
+Ajouter **this.image** et **this.id** dans le constructeur de la classe profil (un oubli...) :
+```
+Profil(
+  {required this.nom,
+  required this.prenom,
+  required this.presentation,
+  required this.email,
+  this.image,
+  this.id});
+```
+
+> Notez qu'ils ne sont pas marqués **required**
+
+Implémenter la logique pour enregistrer l'image :
+- Si l'image a été sélectionnée (avec l'image picker), l'enregistrer dans le storage Directus à laide du service que nous avons créé
+- Si l'appel HTTP réussit (si nous obtenons l'id de l'image sur le serveur) construire l'url de l'image. Elle aura ce format :
+```
+"${Constants.uriAssets}/$imageId"
+```
+- Passer cette url dans la clé "image" du profil à enregistrer avant de l'envoyer sur l'API.
+
+Bonus : La soumission du formulaire commence à être longue, ça pourrait être bien de désactiver le bouton valider, ou le remplacer par un spinner une fois cliqué. Comment faire ?
