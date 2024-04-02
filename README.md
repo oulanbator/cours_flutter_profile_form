@@ -99,6 +99,7 @@ flutter pub add image_picker
 
 #### Tips :
 > Si besoin, aidez-vous des éléments vus dans [la démo d'image picker](https://github.com/oulanbator/demo_imagepicker)
+> 
 > On peut avoir des erreurs après l'ajout d'un package. N'hésitez pas à arrêter/relancer l'appli. Voire, si cela persiste, à faire un :
 ```
 flutter clean
