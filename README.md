@@ -87,9 +87,20 @@ Vous devez également ajouter une image pour chaque profil. Cela recouvre plusie
 Ensuite, il faudra sauvegarder cette image sur l'API. Nous verrons cela dans l'exercice suivant.
 
 Implémentez un image picker et affichez l'image sélectionnée en tête du formulaire. Pour faire simple, disons qu'on ne souhaite pas pouvoir modifier l'image une fois sélectionnée :
+- Ajouter le package image_picker à votre projet
+
+```
+flutter pub add image_picker
+```
+
 - Ajoutez unne propriété pour stocker votre image (de type **File?** puisque par défaut elle est égale à **null**)
 - Si l'image n'est pas sélectionnée, afficher un IconButton pour ouvrir l'image picker
 - Si l'image est sélectionnée, afficher l'image
 
 #### Tips :
-> Si besoin, aidez-vous des éléments vus dans [la démo d'image picker](https://github.com/oulanbator/demo_imagepicker) 
+> Si besoin, aidez-vous des éléments vus dans [la démo d'image picker](https://github.com/oulanbator/demo_imagepicker)
+> On peut avoir des erreurs après l'ajout d'un package. N'hésitez pas à arrêter/relancer l'appli. Voire, si cela persiste, à faire un :
+```
+flutter clean
+flutter pub get
+```
