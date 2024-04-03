@@ -18,7 +18,11 @@ class ProfilDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             if (profil.image != null)
-              Image.network(profil.image!),
+         Center(
+              child: ClipOval(
+                child: Image.network(profil.image!, fit: BoxFit.cover, width: 200, height: 200),
+              ),
+            ),
             Text('Nom: ${profil.nom}'),
             Text('Prenom: ${profil.prenom}'),
             Text('Email: ${profil.email}'),
