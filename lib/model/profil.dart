@@ -1,8 +1,8 @@
 class Profil {
-  final String nom;
-  final String prenom;
-  final String presentation;
-  final String email;
+  late final String nom;
+  late final String prenom;
+  late final String presentation;
+  late final String email;
   // L'image n'est pas obligatoire
   String? image;
   // L'id n'est pas connu au moment de la création du profil
