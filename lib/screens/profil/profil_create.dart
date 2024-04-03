@@ -113,7 +113,8 @@ class _ProfilCreateState extends State<ProfilCreate> {
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Email',icon: Icon(Icons.email)),
                 validator: (value) {
-                  if (value == null || value.isEmpty || !value.contains('@')) {
+                  final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                  if (value == null || value.isEmpty || !emailRegex.hasMatch(value)) {
                     return 'Please enter a valid email';
                   }
                   return null;
