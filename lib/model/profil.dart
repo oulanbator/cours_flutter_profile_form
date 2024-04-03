@@ -21,4 +21,13 @@ class Profil {
         email = json["email"] as String,
         image = json["image"] != null ? json["image"] as String : null,
         id = json["id"] != null ? json["id"] as int : null;
+
+  Map<String, dynamic> toJson() {
+    return {
+      "nom": nom,
+      "prenom": prenom,
+      "presentation": presentation,
+      "email": email
+    };
+  }
 }
