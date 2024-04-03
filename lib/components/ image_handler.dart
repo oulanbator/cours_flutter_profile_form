@@ -6,6 +6,7 @@ import 'image_picker_modal.dart';
 
 class ImageHandler extends StatefulWidget {
   final void Function(File) onImagePicked;
+
   ImageHandler({required this.onImagePicked});
 
   @override
@@ -27,7 +28,8 @@ class _ImageHandlerState extends State<ImageHandler> {
               icon: const Icon(Icons.camera_alt),
               onPressed: () => _showImagePickerModal(context),
             ),
-            if (_image != null) // Only show the remove button if an image is selected
+            if (_image !=
+                null) // Only show the remove button if an image is selected
               IconButton(
                 icon: const Icon(Icons.remove_circle),
                 onPressed: _removeImage,
@@ -69,21 +71,23 @@ class _ImageHandlerState extends State<ImageHandler> {
     );
   }
 
-Future<void> _pickImage(ImageSource source) async {
-  await ImagePicker()
-      .pickImage(
-        source: source,
-        maxHeight: 1000,
-        maxWidth: 1000,
-        imageQuality: 50, // Ici
-      )
-      .then((XFile? image) {
-        if (image != null) {
-          _setImage(File(image.path));
-        }
-      });
-}
+  /// Permet l'affichage de l'imagePicker lui-même en fonction de la source
+  Future<void> _pickImage(ImageSource source) async {
+    await ImagePicker()
+        .pickImage(
+      source: source,
+      maxHeight: 1000,
+      maxWidth: 1000,
+      imageQuality: 50, // Ici
+    )
+        .then((XFile? image) {
+      if (image != null) {
+        _setImage(File(image.path));
+      }
+    });
+  }
 
+  /// Affecte l'image dans la variable _picture avec setState (pour forcer un nouveau rendu de notre widget)
   void _setImage(File image) {
     setState(() {
       _image = image;
