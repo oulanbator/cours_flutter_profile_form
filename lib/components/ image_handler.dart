@@ -69,20 +69,20 @@ class _ImageHandlerState extends State<ImageHandler> {
     );
   }
 
-  Future<void> _pickImage(ImageSource source) async {
-    await ImagePicker()
-        .pickImage(
-          source: source,
-          maxHeight: 1000,
-          maxWidth: 1000,
-          imageQuality: 100,
-        )
-        .then((XFile? image) {
-          if (image != null) {
-            _setImage(File(image.path));
-          }
-        });
-  }
+Future<void> _pickImage(ImageSource source) async {
+  await ImagePicker()
+      .pickImage(
+        source: source,
+        maxHeight: 1000,
+        maxWidth: 1000,
+        imageQuality: 50, // Ici
+      )
+      .then((XFile? image) {
+        if (image != null) {
+          _setImage(File(image.path));
+        }
+      });
+}
 
   void _setImage(File image) {
     setState(() {

@@ -7,10 +7,12 @@ class Profil {
   int? id;
 
   Profil(
-      {this.nom,
-        this.prenom,
-        this.presentation,
-        this.email});
+      {required this.nom,
+      required this.prenom,
+      required this.presentation,
+      required this.email,
+      this.image,
+      this.id});
 
   Profil.fromJson(Map<String, dynamic> json)
       : nom = json["nom"] as String,
@@ -30,6 +32,10 @@ class Profil {
 
     if (image != null) {
       data['image'] = image;
+    }
+
+    if (id != null) {
+      data['id'] = id;
     }
 
     return data;
