@@ -1,3 +1,5 @@
+import 'package:cours_flutter_profile_form/service/profil_service.dart';
+import 'package:cours_flutter_profile_form/screens/home.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/profil.dart';
@@ -13,12 +15,31 @@ class _ProfilCreateState extends State<ProfilCreate> {
   final _formKey = GlobalKey<FormState>();
   final _profil = Profil(nom: '', prenom: '', presentation: '', email: '');
 
-  void _submitForm() {
+  void _submitForm() async {
     final form = _formKey.currentState;
     if (form!.validate()) {
       form.save();
-      print(
-          'Nom: ${_profil.nom}, Prenom: ${_profil.prenom}, Presentation: ${_profil.presentation}, Email: ${_profil.email}');
+      print('Nom: ${_profil.nom}, Prenom: ${_profil.prenom}, Presentation: ${_profil.presentation}, Email: ${_profil.email}');
+      final bool success = await ProfilService().createProfil(_profil);
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Profil created successfully'),
+            backgroundColor: Colors.green, // Set color to green
+          ),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to create profil'),
+            backgroundColor: Colors.red, // Set color to red
+          ),
+        );
+      }
     }
   }
 

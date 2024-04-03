@@ -7,7 +7,6 @@ class ProfilService {
   Future<List<Profil>> fetchProfils() async {
     final response = await http.get(Uri.parse(Constants.uriProfil));
 
-    // Si l'on a un HTTP 200, on parse la réponse de notre webservice
     if (response.statusCode == 200) {
       return parseProfils(response.body);
     } else {
@@ -18,9 +17,24 @@ class ProfilService {
   List<Profil> parseProfils(String responseBody) {
     final Map<String, dynamic> body = jsonDecode(responseBody);
     final List<dynamic> data = body['data'];
-    // Effectue un mapping de chaque élément 'dynamic' de notre List
-    // Map un 'Profil' grâce au constructeur .fromJson
-    // Retourne une List<Profil> avec .toList();
     return data.map((element) => Profil.fromJson(element)).toList();
+  }
+
+  Future<bool> createProfil(Profil profil) async {
+    final Map<String, String> headers = {
+      "Content-Type": "application/json",
+    };
+
+    final response = await http.post(
+      Uri.parse(Constants.uriProfil),
+      headers: headers,
+      body: jsonEncode(profil.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

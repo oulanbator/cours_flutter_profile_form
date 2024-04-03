@@ -51,7 +51,7 @@ class Home extends StatelessWidget {
   _listElement(BuildContext context, Profil profil) {
     return ListTile(
       title: Text("${profil.nom} ${profil.prenom}"),
-      subtitle: Text(profil.presentation),
+     subtitle: Text(profil.presentation ?? 'No presentation available'),
       onTap: () {},
     );
   }

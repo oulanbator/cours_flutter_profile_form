@@ -1,18 +1,16 @@
 class Profil {
-  late final String nom;
-  late final String prenom;
-  late final String presentation;
-  late final String email;
-  // L'image n'est pas obligatoire
+  String? nom;
+  String? prenom;
+  String? presentation;
+  String? email;
   String? image;
-  // L'id n'est pas connu au moment de la création du profil
   int? id;
 
   Profil(
-      {required this.nom,
-      required this.prenom,
-      required this.presentation,
-      required this.email});
+      {this.nom,
+      this.prenom,
+      this.presentation,
+      this.email});
 
   Profil.fromJson(Map<String, dynamic> json)
       : nom = json["nom"] as String,
@@ -21,4 +19,19 @@ class Profil {
         email = json["email"] as String,
         image = json["image"] != null ? json["image"] as String : null,
         id = json["id"] != null ? json["id"] as int : null;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {
+      'nom': nom,
+      'prenom': prenom,
+      'presentation': presentation,
+      'email': email,
+    };
+
+    if (image != null) {
+      data['image'] = image;
+    }
+
+    return data;
+  }
 }
