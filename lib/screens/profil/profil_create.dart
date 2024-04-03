@@ -75,10 +75,13 @@ class _ProfilCreateState extends State<ProfilCreate> {
         title: const Text("Nouveau Profil"),
       ),
       body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          // Add horizontal padding
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
               ImageHandler(
                 onImagePicked: (image) {
                   setState(() {
@@ -143,6 +146,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
           ),
         ),
       ),
+    ),
     );
   }
 }
