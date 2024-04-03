@@ -7,7 +7,7 @@ import 'image_picker_modal.dart';
 class ImageHandler extends StatefulWidget {
   final void Function(File) onImagePicked;
 
-  ImageHandler({required this.onImagePicked});
+  const ImageHandler({super.key, required this.onImagePicked});
 
   @override
   _ImageHandlerState createState() => _ImageHandlerState();
@@ -42,7 +42,7 @@ class _ImageHandlerState extends State<ImageHandler> {
 
   Widget _imageContainer() {
     if (_image != null) {
-      return Container(
+      return SizedBox(
         width: 200.0,
         height: 200.0,
         child: ClipOval(

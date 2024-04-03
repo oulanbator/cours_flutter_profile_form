@@ -4,7 +4,7 @@ import 'package:cours_flutter_profile_form/model/profil.dart';
 class ProfilDetails extends StatelessWidget {
   final Profil profil;
 
-  ProfilDetails({required this.profil});
+  const ProfilDetails({super.key, required this.profil});
 
   @override
   Widget build(BuildContext context) {

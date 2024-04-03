@@ -40,7 +40,7 @@ class Home extends StatelessWidget {
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProfilCreate(),
+            builder: (context) => const ProfilCreate(),
           ),
         ),
         tooltip: 'Nouveau profil',

@@ -10,7 +10,7 @@ import '../../model/profil.dart';
 import '../../service/file_transfer_service.dart';
 
 class ProfilCreate extends StatefulWidget {
-  const ProfilCreate({Key? key}) : super(key: key);
+  const ProfilCreate({super.key});
 
   @override
   State<ProfilCreate> createState() => _ProfilCreateState();
@@ -44,7 +44,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
       final bool success = await ProfilService().createProfil(_profil);
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Profil created successfully'),
             backgroundColor: Colors.green, // Set color to green
           ),
@@ -55,7 +55,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Failed to create profil'),
             backgroundColor: Colors.red, // Set color to red
           ),
