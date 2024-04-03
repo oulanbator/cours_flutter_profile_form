@@ -8,9 +8,9 @@ class Profil {
 
   Profil(
       {this.nom,
-      this.prenom,
-      this.presentation,
-      this.email});
+        this.prenom,
+        this.presentation,
+        this.email});
 
   Profil.fromJson(Map<String, dynamic> json)
       : nom = json["nom"] as String,
