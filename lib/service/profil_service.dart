@@ -37,4 +37,23 @@ class ProfilService {
       return false;
     }
   }
+
+Future<bool> deleteProfil(int? id) async {
+  if (id == null) {
+    print('Error: Profil id is null');
+    return false;
+  }
+
+  final response = await http.delete(
+    Uri.parse('${Constants.uriProfil}/$id'),
+  );
+
+  if (response.statusCode == 200 || response.statusCode == 204) {
+    return true;
+  } else {
+    print('Error: Failed to delete profil. Status code: ${response.statusCode}');
+    print('Response body: ${response.body}');
+    return false;
+  }
+}
 }
