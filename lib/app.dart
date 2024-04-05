@@ -9,6 +9,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,
+
       ),
       home: const Home(),
     );
