@@ -4,9 +4,14 @@ import 'package:cours_flutter_profile_form/screens/profil/profil_details.dart';
 import 'package:cours_flutter_profile_form/service/profil_service.dart';
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
 
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +19,6 @@ class Home extends StatelessWidget {
         title: const Text("Profils"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      // Home affiche un ListView à partir d'un FutureBuilder
       body: FutureBuilder(
         future: ProfilService().fetchProfils(),
         builder: (context, snapshot) {
@@ -35,12 +39,15 @@ class Home extends StatelessWidget {
           }
         },
       ),
-      // On utilise également un FloatingActionButton pour accéder à la page de création de profil
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const ProfilCreate(),
+            builder: (context) => ProfilCreate(
+              onProfileUpdated: () {
+                setState(() {});
+              },
+            ),
           ),
         ),
         tooltip: 'Nouveau profil',
@@ -53,13 +60,21 @@ class Home extends StatelessWidget {
     return ListTile(
       title: Text("${profil.nom} ${profil.prenom}"),
       subtitle: Text(profil.email ?? 'No email available'),
-      onTap: () {
-        Navigator.push(
+      onTap: () async {
+        final updated = await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProfilDetails(profil: profil),
+            builder: (context) => ProfilDetails(
+              profil: profil,
+              onProfileUpdated: () {
+                Navigator.pop(context, true);
+              },
+            ),
           ),
         );
+        if (updated != null && updated) {
+          setState(() {});
+        }
       },
     );
   }

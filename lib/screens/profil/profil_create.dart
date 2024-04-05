@@ -10,7 +10,8 @@ import '../../model/profil.dart';
 import '../../service/file_transfer_service.dart';
 
 class ProfilCreate extends StatefulWidget {
-  const ProfilCreate({super.key});
+  final void Function() onProfileUpdated;
+  const ProfilCreate({super.key, required this.onProfileUpdated});
 
   @override
   State<ProfilCreate> createState() => _ProfilCreateState();
@@ -53,6 +54,8 @@ class _ProfilCreateState extends State<ProfilCreate> {
           context,
           MaterialPageRoute(builder: (context) => Home()),
         );
+        widget.onProfileUpdated(); // Notify the parent widget that the profile has been updated
+       // Notify the parent widget that the profile has been updated
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

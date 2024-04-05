@@ -1,22 +1,43 @@
+import 'package:cours_flutter_profile_form/screens/profil/profil_edit.dart';
 import 'package:cours_flutter_profile_form/service/profil_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cours_flutter_profile_form/model/profil.dart';
 
-class ProfilDetails extends StatelessWidget {
+class ProfilDetails extends StatefulWidget {
   final Profil profil;
 
-  const ProfilDetails({super.key, required this.profil});
+  const ProfilDetails({Key? key, required this.profil, required Null Function() onProfileUpdated}) : super(key: key);
 
+  @override
+  _ProfilDetailsState createState() => _ProfilDetailsState();
+}
+
+class _ProfilDetailsState extends State<ProfilDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${profil.nom} ${profil.prenom}'),
+        title: Text('${widget.profil.nom} ${widget.profil.prenom}'),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditProfilForm(profil: widget.profil, onProfileUpdated: () {
+                    // This will cause the Home widget to rebuild and display the updated profile
+                    setState(() {});
+                  },
+                  ),
+                ),
+              );
+            },
+          ),
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () async {
-              final bool success = await ProfilService().deleteProfil(profil.id);
+              final bool success = await ProfilService().deleteProfil(widget.profil.id);
               if (success) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -42,16 +63,16 @@ class ProfilDetails extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            if (profil.image != null)
+            if (widget.profil.image != null)
               Center(
                 child: ClipOval(
-                  child: Image.network(profil.image!, fit: BoxFit.cover, width: 200, height: 200),
+                  child: Image.network(widget.profil.image!, fit: BoxFit.cover, width: 200, height: 200),
                 ),
               ),
-            Text('Nom: ${profil.nom}'),
-            Text('Prenom: ${profil.prenom}'),
-            Text('Email: ${profil.email}'),
-            Text('Presentation: ${profil.presentation ?? 'No presentation available'}'),
+            Text('Nom: ${widget.profil.nom}'),
+            Text('Prenom: ${widget.profil.prenom}'),
+            Text('Email: ${widget.profil.email}'),
+            Text('Presentation: ${widget.profil.presentation ?? 'No presentation available'}'),
           ],
         ),
       ),

@@ -56,4 +56,31 @@ Future<bool> deleteProfil(int? id) async {
     return false;
   }
 }
+
+Future<bool> updateProfil(Profil profil) async {
+  if (profil.id == null) {
+    print('Error: Profil id is null');
+    return false;
+  }
+
+  final Map<String, String> headers = {
+    "Content-Type": "application/json",
+  };
+
+  final response = await http.patch(
+    Uri.parse('${Constants.uriProfil}/${profil.id}'),
+    headers: headers,
+    body: jsonEncode(profil.toJson()),
+  );
+
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    print('Error: Failed to update profil. Status code: ${response.statusCode}');
+    print('Response body: ${response.body}');
+    return false;
+  }
+}
+
+
 }
