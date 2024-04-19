@@ -12,6 +12,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late Future<List<Profil>> _profilsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _profilsFuture = ProfilService().fetchProfils();
+  }
+
+  void _refreshProfils() {
+    setState(() {
+      _profilsFuture = ProfilService().fetchProfils();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +34,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: FutureBuilder(
-        future: ProfilService().fetchProfils(),
+        future: _profilsFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var profils = snapshot.data!;
@@ -44,9 +58,7 @@ class _HomeState extends State<Home> {
           context,
           MaterialPageRoute(
             builder: (context) => ProfilCreate(
-              onProfileUpdated: () {
-                setState(() {});
-              },
+              onProfileUpdated: _refreshProfils,
             ),
           ),
         ),
@@ -66,14 +78,12 @@ class _HomeState extends State<Home> {
           MaterialPageRoute(
             builder: (context) => ProfilDetails(
               profil: profil,
-              onProfileUpdated: () {
-                Navigator.pop(context, true);
-              },
+              onProfileUpdated: _refreshProfils,
             ),
           ),
         );
         if (updated != null && updated) {
-          setState(() {});
+          _refreshProfils();
         }
       },
     );

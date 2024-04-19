@@ -5,8 +5,9 @@ import 'package:cours_flutter_profile_form/model/profil.dart';
 
 class ProfilDetails extends StatefulWidget {
   final Profil profil;
+  final VoidCallback onProfileUpdated; // Define the onProfileUpdated method
 
-  const ProfilDetails({Key? key, required this.profil, required Null Function() onProfileUpdated}) : super(key: key);
+  const ProfilDetails({Key? key, required this.profil, required this.onProfileUpdated}) : super(key: key);
 
   @override
   _ProfilDetailsState createState() => _ProfilDetailsState();
@@ -46,6 +47,8 @@ class _ProfilDetailsState extends State<ProfilDetails> {
                   ),
                 );
                 Navigator.pop(context);
+                print('onProfileUpdated callback is being called'); // Add this print statement
+                widget.onProfileUpdated(); // Call the onProfileUpdated method
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(

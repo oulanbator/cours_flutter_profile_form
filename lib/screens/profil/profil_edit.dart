@@ -90,40 +90,40 @@ class _EditProfilFormState extends State<EditProfilForm> {
               },
             ),
             ElevatedButton(
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  widget.profil.nom = _nameController.text;
-                  widget.profil.prenom = _prenomController.text;
-                  widget.profil.presentation = _presentationController.text;
-                  widget.profil.email = _emailController.text;
-                  if (_image != null) {
-                    widget.profil.image = _image!.path; // Update the image path
-                  }
-                  final bool success = await ProfilService().updateProfil(widget.profil);
-                  if (success) {
-                    // Update was successful, navigate back to the profile list
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Profile updated successfully'),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                    Navigator.pop(context);
-                    widget.onProfileUpdated();
-
-                  } else {
-                    // Show an error message
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Failed to update profile'),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
-                }
-              },
-              child: Text('Update'),
-            ),
+  onPressed: () async {
+    if (_formKey.currentState!.validate()) {
+      widget.profil.nom = _nameController.text;
+      widget.profil.prenom = _prenomController.text;
+      widget.profil.presentation = _presentationController.text;
+      widget.profil.email = _emailController.text;
+      if (_image != null) {
+        widget.profil.image = _image!.path; // Update the image path
+      }
+      final bool success = await ProfilService().updateProfil(widget.profil);
+      if (success) {
+        // Update was successful, navigate back to the profile list
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Profile updated successfully'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.pop(context);
+        print('onProfileUpdated callback is being called');
+        widget.onProfileUpdated(); // Notify the parent widget that the profile has been updated
+      } else {
+        // Show an error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to update profile'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  },
+  child: Text('Update'),
+),
           ],
         ),
       ),

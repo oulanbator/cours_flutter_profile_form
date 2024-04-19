@@ -8,6 +8,7 @@ class ProfilService {
     final response = await http.get(Uri.parse(Constants.uriProfil));
 
     if (response.statusCode == 200) {
+      print('Fetching updated list of profiles');
       return parseProfils(response.body);
     } else {
       throw Exception('Failed to load album');
@@ -49,6 +50,7 @@ Future<bool> deleteProfil(int? id) async {
   );
 
   if (response.statusCode == 200 || response.statusCode == 204) {
+    print('Profile deleted successfully');
     return true;
   } else {
     print('Error: Failed to delete profil. Status code: ${response.statusCode}');
