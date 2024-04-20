@@ -1,14 +1,18 @@
+import 'dart:io';
+
 class Profil {
   final String nom;
   final String prenom;
   final String email;
   final String presentation;
+  final File? image;
 
   Profil({
     required this.nom,
     required this.prenom,
     required this.email,
     required this.presentation,
+    this.image,
   });
 
   Map<String, dynamic> toJson() {
