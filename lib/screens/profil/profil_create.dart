@@ -1,7 +1,12 @@
+import 'dart:io';
+
+import 'package:cours_flutter_profile_form/constants.dart';
 import 'package:cours_flutter_profile_form/model/profil.dart';
-import 'package:cours_flutter_profile_form/screens/home.dart';
+import 'package:cours_flutter_profile_form/screens/components/image_picker_modal.dart';
+import 'package:cours_flutter_profile_form/service/file_transfert_service.dart';
 import 'package:cours_flutter_profile_form/service/profil_service.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfilCreate extends StatefulWidget {
   const ProfilCreate({super.key});
@@ -17,6 +22,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
   String _prenom = "";
   String _email = "";
   String _presentation = "";
+  File? _picture;
   ProfilService _service = ProfilService();
 
   @override
@@ -32,7 +38,13 @@ class _ProfilCreateState extends State<ProfilCreate> {
           padding: EdgeInsets.all(8),
           child: Column(
             children: [
+              _pictureContainer(),
+              IconButton(
+                icon: const Icon(Icons.camera_alt),
+                onPressed: () => _showImagePickerModal(context),
+              ),
               TextFormField(
+                initialValue: "Pourra",
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Nom',
@@ -52,6 +64,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
               ),
               SizedBox(height: 8),
               TextFormField(
+                initialValue: "Jérôme",
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Prénom',
@@ -71,6 +84,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
               ),
               SizedBox(height: 8),
               TextFormField(
+                initialValue: "jpourra@mds.mds",
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
@@ -92,6 +106,8 @@ class _ProfilCreateState extends State<ProfilCreate> {
               SizedBox(height: 8),
               TextFormField(
                 maxLines: 5,
+                initialValue:
+                    "Bonjour, je suis bonjour, et je vous dis bonjour ! Aurevoir...",
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Présentation',
@@ -121,15 +137,74 @@ class _ProfilCreateState extends State<ProfilCreate> {
     );
   }
 
+  Widget _pictureContainer() {
+    if (_picture != null) {
+      return Image.file(_picture!);
+    }
+    return Container();
+  }
+
+  void _showImagePickerModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return ImagePickerModal(
+          onChoice: (source) => _pickImage(source),
+        );
+      },
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    if (source.name != "camera") {
+      await ImagePicker()
+          .pickImage(
+            source: source,
+            maxHeight: 1000,
+            maxWidth: 1000,
+            imageQuality: 50,
+          )
+          .then((XFile? image) => image != null ? _setImage(image) : null);
+    }
+  }
+
+  void _setImage(XFile image) {
+    setState(() {
+      _picture = File(image.path);
+    });
+  }
+
   void _submit(BuildContext context) async {
     _formKey.currentState?.save();
     if (_formKey.currentState!.validate()) {
-      Profil profil = Profil(
-        nom: _nom,
-        prenom: _prenom,
-        presentation: _presentation,
-        email: _email,
-      );
+
+      Profil? profil;
+      String? pictureId;
+
+      if (_picture != null) {
+        pictureId = await FileTransferService().uploadPicture(
+          _picture!,
+          "${_nom}_${_prenom}",
+        );
+      }
+
+      if (pictureId == null) {
+        profil = Profil(
+          nom: _nom,
+          prenom: _prenom,
+          presentation: _presentation,
+          email: _email,
+        );
+      } else {
+        profil = Profil(
+          nom: _nom,
+          prenom: _prenom,
+          presentation: _presentation,
+          email: _email,
+          image: "${Constants.uriAssets}/${pictureId}",
+        );
+      }
+
       bool success = await _service.createProfile(profil);
       if (context.mounted) {
         if (success) {
