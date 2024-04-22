@@ -29,7 +29,8 @@ class _HomeState extends State<Home> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 var profils = snapshot.data!;
-                return ListView.builder(
+                return ListView.separated(
+                    separatorBuilder: (context, index) => const Divider(),
                     itemCount: profils.length,
                     itemBuilder: (context, index) =>
                         _listElement(context, profils[index]));
@@ -67,7 +68,7 @@ class _HomeState extends State<Home> {
   _listElement(BuildContext context, Profil profil) {
     return ListTile(
       title: Text("${profil.nom} ${profil.prenom}"),
-      subtitle: Text(profil.presentation),
+      subtitle: Text(profil.email),
       onTap: () {
         Navigator.push(
             context,

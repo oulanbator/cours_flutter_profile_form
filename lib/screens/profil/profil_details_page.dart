@@ -31,6 +31,10 @@ class ProfilDetailsPage extends StatelessWidget {
                     width: 200,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.inversePrimary, // Border color
+                        width: 3.0, // Border width
+                      ),
                       image: DecorationImage(
                         image: NetworkImage(profil.image!),
                         fit: BoxFit
@@ -39,10 +43,41 @@ class ProfilDetailsPage extends StatelessWidget {
                     ),
                   ),
                 const SizedBox(height: 10),
-                Text("Nom : ${profil.nom}"),
-                Text("Prénom : ${profil.prenom}"),
-                Text("Email : ${profil.email}"),
-                Text("Présentation : ${profil.presentation}"),
+                const Text(
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    "Nom Prénom"),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                      textAlign: TextAlign.center,
+                      "${profil.nom} ${profil.prenom}"),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    "Email"),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                      textAlign: TextAlign.center,
+                      profil.email),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    "Présentation"),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    textAlign: TextAlign.center,
+                      profil.presentation),
+                ),
                 const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
