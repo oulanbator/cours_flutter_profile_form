@@ -32,10 +32,8 @@ class ProfilService {
     );
 
     if (response.statusCode == 200) {
-      // En cas de succès, renvoyer true
       return true;
     } else {
-      // En cas d'échec, renvoyer false
       return false;
     }
   }
