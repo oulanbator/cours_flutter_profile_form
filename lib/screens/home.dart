@@ -1,50 +1,66 @@
 import 'package:cours_flutter_profile_form/model/profil.dart';
-import 'package:cours_flutter_profile_form/screens/profil/profil_create.dart';
 import 'package:cours_flutter_profile_form/service/profil_service.dart';
+import 'package:cours_flutter_profile_form/screens/profil/profil_create.dart';
+import 'package:cours_flutter_profile_form/screens/profil/profil_details_page.dart';
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
 
   @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final ValueNotifier<int> _refreshNotifier = ValueNotifier<int>(0);
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Profils"),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      // Home affiche un ListView à partir d'un FutureBuilder
-      body: FutureBuilder(
-        future: ProfilService().fetchProfils(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            var profils = snapshot.data!;
-            return ListView.builder(
-                itemCount: profils.length,
-                itemBuilder: (context, index) =>
-                    _listElement(context, profils[index]));
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
-      // On utilise également un FloatingActionButton pour accéder à la page de création de profil
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProfilCreate(),
+    return ValueListenableBuilder<int>(
+      valueListenable: _refreshNotifier,
+      builder: (context, value, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("Profils"),
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           ),
-        ),
-        tooltip: 'Nouveau profil',
-        child: const Icon(Icons.add),
-      ),
+          body: FutureBuilder(
+            future: ProfilService().fetchProfils(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var profils = snapshot.data!;
+                return ListView.builder(
+                    itemCount: profils.length,
+                    itemBuilder: (context, index) =>
+                        _listElement(context, profils[index]));
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text(snapshot.error.toString()),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              final newProfil = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfilCreate(),
+                ),
+              );
+              if (newProfil != null) {
+                _refreshNotifier.value++;
+              }
+            },
+            tooltip: 'Nouveau profil',
+            child: const Icon(Icons.add),
+          ),
+        );
+      },
     );
   }
 
@@ -52,7 +68,13 @@ class Home extends StatelessWidget {
     return ListTile(
       title: Text("${profil.nom} ${profil.prenom}"),
       subtitle: Text(profil.presentation),
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfilDetailsPage(profil: profil),
+            ));
+      },
     );
   }
 }

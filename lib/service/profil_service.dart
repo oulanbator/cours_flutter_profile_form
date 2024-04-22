@@ -23,4 +23,20 @@ class ProfilService {
     // Retourne une List<Profil> avec .toList();
     return data.map((element) => Profil.fromJson(element)).toList();
   }
+
+  Future<bool> createProfil(Profil profil) async {
+    final response = await http.post(
+      Uri.parse(Constants.uriProfil),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(profil.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Erreur lors de la création du profil');
+    }
+  }
 }

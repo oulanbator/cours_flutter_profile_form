@@ -104,7 +104,7 @@ Ensuite, il faudra sauvegarder cette image sur l'API. Nous verrons cela dans l'e
 Implémentez un image picker et affichez l'image sélectionnée en tête du formulaire. Pour faire simple, disons qu'on ne souhaite pas pouvoir modifier l'image une fois sélectionnée :
 - Ajouter le package image_picker à votre projet
 
-```
+```bash
 flutter pub add image_picker
 ```
 
@@ -116,7 +116,8 @@ flutter pub add image_picker
 > Si besoin, aidez-vous des éléments vus dans [la démo d'image picker](https://github.com/oulanbator/demo_imagepicker)
 > 
 > On peut avoir des erreurs après l'ajout d'un package. N'hésitez pas à arrêter/relancer l'appli. Voire, si cela persiste, à faire un :
-```
+
+``` bash
 flutter clean
 flutter pub get
 ```
@@ -128,7 +129,8 @@ Cette dernière étape doit se faire en deux partie :
 - Construction de l'url et ajout aux données du Profil avant d'enregistrer le profil à proprement parler
 
 Ajouter le package http_parser à votre projet (il va nous donner accès à l'objet MediaType) :
-```
+
+```bash
 flutter pub add http_parser
 ```
 
