@@ -19,7 +19,7 @@ class ProfilDetailsPage extends StatelessWidget {
       ),
       body: Center(
         child: SizedBox(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.of(context).size.width, // Utilisation de la largeur de l'écran
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
