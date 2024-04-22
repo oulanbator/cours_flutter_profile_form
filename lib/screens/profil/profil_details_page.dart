@@ -30,7 +30,7 @@ class ProfilDetailsPage extends StatelessWidget {
                     height: 200,
                     width: 200,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
+                      borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                         color: Theme.of(context).colorScheme.inversePrimary, // Border color
                         width: 3.0, // Border width

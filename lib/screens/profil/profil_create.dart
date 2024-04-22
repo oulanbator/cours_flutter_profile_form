@@ -149,7 +149,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
         height: 200, // Définir la hauteur maximale
         width: 200, // Définir la largeur maximale
         decoration: BoxDecoration(
-          shape: BoxShape.circle,
+          borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
             image: FileImage(_picture!),
             fit: BoxFit.cover, // Pour maintenir l'aspect ratio de l'image
