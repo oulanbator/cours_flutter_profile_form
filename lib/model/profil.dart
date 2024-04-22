@@ -5,31 +5,42 @@ class Profil {
   final String prenom;
   final String email;
   final String presentation;
-  final File? image;
+  String? image;
+  int? id;
 
-  Profil({
-    required this.nom,
-    required this.prenom,
-    required this.email,
-    required this.presentation,
-    this.image,
-  });
+  Profil(
+      {required this.nom,
+        required this.prenom,
+        required this.presentation,
+        required this.email,
+        this.image,
+        this.id});
 
   Map<String, dynamic> toJson() {
-    return {
+    final Map<String, dynamic> data = {
       'nom': nom,
       'prenom': prenom,
-      'email': email,
       'presentation': presentation,
+      'email': email,
     };
+
+    if (image != null) {
+      data['image'] = image;
+    }
+
+    if (id != null) {
+      data['id'] = id;
+    }
+
+    return data;
   }
 
-  factory Profil.fromJson(Map<String, dynamic> json) {
-    return Profil(
-      nom: json['nom'],
-      prenom: json['prenom'],
-      email: json['email'],
-      presentation: json['presentation'],
-    );
-  }
+
+  Profil.fromJson(Map<String, dynamic> json)
+      : nom = json["nom"] as String,
+        prenom = json["prenom"] as String,
+        presentation = json["presentation"] as String,
+        email = json["email"] as String,
+        image = json["image"] != null ? json["image"] as String : null,
+        id = json["id"] != null ? json["id"] as int : null;
 }

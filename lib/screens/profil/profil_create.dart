@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../constants.dart';
 import '../../model/profil.dart';
 import '../../service/profil_service.dart';
+import '../../service/file_transfer_service.dart';
 
 class ProfilCreate extends StatefulWidget {
   const ProfilCreate({Key? key}) : super(key: key);
@@ -18,6 +20,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _presentationController = TextEditingController();
   File? _image;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +89,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
                     ),
                     SizedBox(height: 20.0),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: _isLoading ? null : () {
                         if (_formKey.currentState!.validate()) {
                           _submitForm();
                         }
@@ -109,7 +112,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
         _image != null ? Image.file(_image!) : Container(),
         _image == null
             ? IconButton(
-          onPressed: _getImage,
+          onPressed: _isLoading ? null : _getImage,
           icon: Icon(Icons.add_a_photo),
           tooltip: 'Sélectionner une image',
         )
@@ -119,7 +122,12 @@ class _ProfilCreateState extends State<ProfilCreate> {
   }
 
   void _getImage() async {
-    final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+      maxHeight: 1000,
+      maxWidth: 1000,
+      imageQuality: 50, // Ici
+    );
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
@@ -127,25 +135,41 @@ class _ProfilCreateState extends State<ProfilCreate> {
     }
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
       Profil profil = Profil(
         nom: _nomController.text,
         prenom: _prenomController.text,
         email: _emailController.text,
         presentation: _presentationController.text,
-        image: _image,
+        image: null,
       );
 
+      if(_image!= null) {
+        final imageId= await FileTransferService().uploadPicture(_image!, profil.nom!);
+        if(imageId != null) {
+          profil.image = imageId;
+        }
+        if(imageId != null) {
+          profil.image = "${Constants.uriAssets}/$imageId";
+        }
+      }
+
       ProfilService().createProfil(profil).then((success) {
+        setState(() {
+          _isLoading = false; // Désactiver isLoading après la soumission
+        });
+
         if (success) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Profil créé avec succès'),
             ),
           );
-
-          Navigator.pushReplacementNamed(context, '/home');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
