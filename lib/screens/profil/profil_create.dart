@@ -1,4 +1,8 @@
+import 'package:cours_flutter_profile_form/model/profil.dart';
+import 'package:cours_flutter_profile_form/screens/home.dart';
+import 'package:cours_flutter_profile_form/service/profil_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfilCreate extends StatefulWidget {
   const ProfilCreate({super.key});
@@ -17,6 +21,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
 
   @override
   Widget build(BuildContext context) {
+    var profilService = Provider.of<ProfilService>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Nouveau Profil"),
@@ -91,7 +96,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () => _submitForm(),
+                      onPressed: () => _submitForm(profilService, context),
                       child: const Text("Submit"),
                     ),
                   )
@@ -104,27 +109,37 @@ class _ProfilCreateState extends State<ProfilCreate> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm(ProfilService profilService, BuildContext context) async {
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
-        print('hello');
-        print('Name: ${_nameController.text}');
-        print('FirstName: ${_firstnameController.text}');
-        print('Mail: ${_emailController.text}');
-        print('Presentation: ${_presentationController.text}');
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            duration: Duration(seconds: 3),
-            content: Text("Complété avec succès !"),
-          ),
+        var profil = Profil(
+          nom: _nameController.text,
+          prenom: _firstnameController.text,
+          email: _emailController.text,
+          presentation: _presentationController.text,
         );
+
+        bool success = await profilService.createProfil(profil);
+
+        if (success) {
+          _successMessageAndNavigate();
+        }
       }
     }
   }
 
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    super.dispose();
+  void _successMessageAndNavigate() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        duration: Duration(seconds: 3),
+        content: Text("Complété avec succès !"),
+      ),
+    );
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const Home(),
+      ),
+    );
   }
 }

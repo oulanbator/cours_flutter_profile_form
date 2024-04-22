@@ -1,9 +1,10 @@
 import 'package:cours_flutter_profile_form/constants.dart';
 import 'package:cours_flutter_profile_form/model/profil.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class ProfilService {
+class ProfilService extends ChangeNotifier {
   Future<List<Profil>> fetchProfils() async {
     final response = await http.get(Uri.parse(Constants.uriProfil));
 
@@ -22,5 +23,25 @@ class ProfilService {
     // Map un 'Profil' grâce au constructeur .fromJson
     // Retourne une List<Profil> avec .toList();
     return data.map((element) => Profil.fromJson(element)).toList();
+  }
+
+  Future<bool> createProfil(Profil profil) async {
+    bool success = false;
+
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+    };
+
+    final response = await http.post(
+      Uri.parse(Constants.uriProfil),
+      headers: headers,
+      body: jsonEncode(profil.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      success = true;
+    }
+
+    return success;
   }
 }

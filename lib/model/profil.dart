@@ -3,9 +3,7 @@ class Profil {
   final String prenom;
   final String presentation;
   final String email;
-  // L'image n'est pas obligatoire
   String? image;
-  // L'id n'est pas connu au moment de la création du profil
   int? id;
 
   Profil(
@@ -21,4 +19,11 @@ class Profil {
         email = json["email"] as String,
         image = json["image"] != null ? json["image"] as String : null,
         id = json["id"] != null ? json["id"] as int : null;
+
+  Map<String, dynamic> toJson() => {
+        "nom": nom,
+        "prenom": prenom,
+        "email": email,
+        "presentation": presentation
+      };
 }
