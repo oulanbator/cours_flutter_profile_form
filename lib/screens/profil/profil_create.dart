@@ -1,12 +1,14 @@
 import 'dart:io';
 
+import 'package:cours_flutter_profile_form/constants.dart';
 import 'package:cours_flutter_profile_form/model/profil.dart';
 import 'package:cours_flutter_profile_form/screens/components/image_picker_modal.dart';
 import 'package:cours_flutter_profile_form/screens/home.dart';
+import 'package:cours_flutter_profile_form/service/image_service.dart';
 import 'package:cours_flutter_profile_form/service/profil_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
 class ProfilCreate extends StatefulWidget {
   const ProfilCreate({super.key});
@@ -24,10 +26,12 @@ class _ProfilCreateState extends State<ProfilCreate> {
   final _presentationController = TextEditingController();
   bool _isImageSelected = false;
   File? _picture;
+  final _fileService = FileTransferService();
+  final _profilService = ProfilService();
 
   @override
   Widget build(BuildContext context) {
-    var profilService = Provider.of<ProfilService>(context, listen: false);
+    // var profilService = Provider.of<ProfilService>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Nouveau Profil"),
@@ -112,7 +116,8 @@ class _ProfilCreateState extends State<ProfilCreate> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () => _submitForm(profilService, context),
+                          onPressed: () => _submitForm(),
+                          // onPressed: () => _submitForm(profilService, context),
                           child: const Text("Submit"),
                         ),
                       )
@@ -127,17 +132,34 @@ class _ProfilCreateState extends State<ProfilCreate> {
     );
   }
 
-  void _submitForm(ProfilService profilService, BuildContext context) async {
+  // void _submitForm(ProfilService profilService, BuildContext context) async {
+  void _submitForm() async {
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
-        var profil = Profil(
-          nom: _nameController.text,
-          prenom: _firstnameController.text,
-          email: _emailController.text,
-          presentation: _presentationController.text,
-        );
+        Profil profil;
 
-        bool success = await profilService.createProfil(profil);
+        if (_picture != null) {
+          var file =
+              await _fileService.uploadPicture(_picture!, _nameController.text);
+
+          profil = Profil(
+            nom: _nameController.text,
+            prenom: _firstnameController.text,
+            email: _emailController.text,
+            presentation: _presentationController.text,
+            image: "${Constants.uriAssets}/$file",
+          );
+          print(profil.image);
+        } else {
+          profil = Profil(
+            nom: _nameController.text,
+            prenom: _firstnameController.text,
+            email: _emailController.text,
+            presentation: _presentationController.text,
+          );
+        }
+
+        bool success = await _profilService.createProfil(profil);
 
         if (success) {
           _successMessageAndNavigate();
@@ -165,6 +187,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
   Widget _pictureContainer() {
     if (_picture != null) {
       _isImageSelected = true;
+
       return Image.file(
         _picture!,
         width: 200,
@@ -198,7 +221,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
           source: source,
           maxHeight: 1000,
           maxWidth: 1000,
-          imageQuality: 100,
+          imageQuality: 50,
         )
         // Si l'image a été choisie, appelle la méthode _setImage, sinon ne fait rien
         .then((XFile? image) => image != null ? _setImage(image) : null);
