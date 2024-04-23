@@ -2,6 +2,8 @@ import 'package:cours_flutter_profile_form/model/profil.dart';
 import 'package:cours_flutter_profile_form/screens/profil/profil_create.dart';
 import 'package:cours_flutter_profile_form/service/profil_service.dart';
 import 'package:flutter/material.dart';
+import 'package:cours_flutter_profile_form/screens/profil/profil_details.dart';
+
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -48,11 +50,19 @@ class Home extends StatelessWidget {
     );
   }
 
-  _listElement(BuildContext context, Profil profil) {
-    return ListTile(
-      title: Text("${profil.nom} ${profil.prenom}"),
-      subtitle: Text(profil.presentation),
-      onTap: () {},
-    );
-  }
+Widget _listElement(BuildContext context, Profil profil) {
+  return ListTile(
+    title: Text("${profil.nom} ${profil.prenom}"),
+    subtitle: Text(profil.email), // Modifié pour afficher l'email comme demandé
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfilDetailsPage(profil: profil),
+        ),
+      );
+    },
+  );
+}
+
 }
