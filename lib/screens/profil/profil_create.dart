@@ -149,7 +149,6 @@ class _ProfilCreateState extends State<ProfilCreate> {
             presentation: _presentationController.text,
             image: "${Constants.uriAssets}/$file",
           );
-          print(profil.image);
         } else {
           profil = Profil(
             nom: _nameController.text,
