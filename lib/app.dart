@@ -9,8 +9,13 @@ class App extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        primaryColor: const Color(0xFF001B33),
+        scaffoldBackgroundColor: const Color(0xFFE4E4E4),
+        appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
       ),
-      home: Home(),
+      home: const Home(),
     );
   }
 }

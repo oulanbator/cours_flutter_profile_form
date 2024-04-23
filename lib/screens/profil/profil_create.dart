@@ -75,9 +75,14 @@ class _ProfilCreateState extends State<ProfilCreate> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Nouveau Profil"),
+        title: Text(
+          "Nouveau Profil",
+          style: TextStyle(color: Colors.white), // Change the color of the title to white
+        ),
+        backgroundColor: Theme.of(context).primaryColor, // Set the background color of the AppBar
       ),
       body: SingleChildScrollView(
+
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           // Add horizontal padding
@@ -141,11 +146,22 @@ class _ProfilCreateState extends State<ProfilCreate> {
                   _profil.presentation = value!;
                 },
               ),
-              ElevatedButton(
-                onPressed: _isSubmitting ? null : _submitForm,
-                child: const Text('Submit'),
-              ),
-            ],
+                Container(
+                  margin: EdgeInsets.only(top: 15.0),
+                  // Add a top margin of 10 pixels
+                  child: ElevatedButton(
+                    onPressed: _isSubmitting ? null : _submitForm,
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Theme.of(context).primaryColor),
+                    ),
+                    child: const Text(
+                      'Submit',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                )
+              ],
           ),
         ),
       ),

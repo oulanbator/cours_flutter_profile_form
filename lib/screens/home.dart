@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cours_flutter_profile_form/model/profil.dart';
 import 'package:cours_flutter_profile_form/screens/profil/profil_create.dart';
 import 'package:cours_flutter_profile_form/screens/profil/profil_details.dart';
@@ -13,11 +14,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late Future<List<Profil>> _profilsFuture;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     _profilsFuture = ProfilService().fetchProfils();
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer t) => _refreshProfils());
   }
 
   void _refreshProfils() {
@@ -27,12 +30,23 @@ class _HomeState extends State<Home> {
   }
 
   @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profils"),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(
+          "Profils",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
+      // Rest of your Scaffold code...
+
       body: FutureBuilder(
         future: _profilsFuture,
         builder: (context, snapshot) {
@@ -63,29 +77,47 @@ class _HomeState extends State<Home> {
           ),
         ),
         tooltip: 'Nouveau profil',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: Colors.white),
+        // Set the color of the icon to white
+        backgroundColor: Theme.of(context)
+            .primaryColor, // Set the background color of the button to the primary color of your theme
       ),
     );
   }
 
-  _listElement(BuildContext context, Profil profil) {
-    return ListTile(
-      title: Text("${profil.nom} ${profil.prenom}"),
-      subtitle: Text(profil.email ?? 'No email available'),
-      onTap: () async {
-        final updated = await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProfilDetails(
-              profil: profil,
-              onProfileUpdated: _refreshProfils,
-            ),
+Widget _listElement(BuildContext context, Profil profil) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0),
+    child: Column(
+      children: [
+        ListTile(
+          leading: Icon(Icons.person, color: Theme.of(context).primaryColor),
+          title: Text(
+            "${profil.nom} ${profil.prenom}",
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
           ),
-        );
-        if (updated != null && updated) {
-          _refreshProfils();
-        }
-      },
-    );
-  }
+          subtitle: Text(
+            profil.email ?? 'No email available',
+            style: TextStyle(fontSize: 16.0),
+          ),
+          onTap: () async {
+            final updated = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProfilDetails(
+                  profil: profil,
+                  onProfileUpdated: _refreshProfils,
+                ),
+              ),
+            );
+            if (updated != null && updated) {
+              _refreshProfils();
+            }
+          },
+        ),
+        const Divider(color: Colors.grey),
+      ],
+    ),
+  );
+}
 }

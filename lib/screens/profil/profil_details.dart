@@ -18,7 +18,12 @@ class _ProfilDetailsState extends State<ProfilDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.profil.nom} ${widget.profil.prenom}'),
+        title: Text(
+          '${widget.profil.nom} ${widget.profil.prenom}',
+          style: TextStyle(color: Colors.white), // Change the color of the title to white
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
+
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.edit),
@@ -88,24 +93,34 @@ class _ProfilDetailsState extends State<ProfilDetails> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            if (widget.profil.image != null)
-              Center(
-                child: ClipOval(
-                  child: Image.network(widget.profil.image!, fit: BoxFit.cover, width: 200, height: 200),
-                ),
-              ),
-            Text('Nom: ${widget.profil.nom}'),
-            Text('Prenom: ${widget.profil.prenom}'),
-            Text('Email: ${widget.profil.email}'),
-            Text('Presentation: ${widget.profil.presentation ?? 'No presentation available'}'),
-          ],
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                if (widget.profil.image != null)
+                  Center(
+                    child: ClipOval(
+                      child: Image.network(widget.profil.image!, fit: BoxFit.cover, width: 200, height: 200),
+                    ),
+                  ),
+                const SizedBox(height: 16.0),
+                const Text('Nom:', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('${widget.profil.nom}', style: const TextStyle(fontSize: 18.0)),
+                const SizedBox(height: 16.0),
+                const Text('Prenom:', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('${widget.profil.prenom}', style: const TextStyle(fontSize: 18.0)),
+                const SizedBox(height: 16.0),
+                const Text('Email:', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('${widget.profil.email}', style: const TextStyle(fontSize: 18.0)),
+                const SizedBox(height: 16.0),
+                const Text('Presentation:', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(widget.profil.presentation ?? 'No presentation available', style: const TextStyle(fontSize: 18.0)),
+              ],
+            ),
+          ),
         ),
-      ),
     );
   }
 }

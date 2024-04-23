@@ -10,7 +10,9 @@ class EditProfilForm extends StatefulWidget {
   final void Function() onProfileUpdated;
   final Profil profil;
 
-  EditProfilForm({Key? key, required this.profil, required this.onProfileUpdated}) : super(key: key);
+  EditProfilForm(
+      {Key? key, required this.profil, required this.onProfileUpdated})
+      : super(key: key);
 
   @override
   _EditProfilFormState createState() => _EditProfilFormState();
@@ -29,7 +31,8 @@ class _EditProfilFormState extends State<EditProfilForm> {
     super.initState();
     _nameController = TextEditingController(text: widget.profil.nom);
     _prenomController = TextEditingController(text: widget.profil.prenom);
-    _presentationController = TextEditingController(text: widget.profil.presentation);
+    _presentationController =
+        TextEditingController(text: widget.profil.presentation);
     _emailController = TextEditingController(text: widget.profil.email);
   }
 
@@ -37,7 +40,12 @@ class _EditProfilFormState extends State<EditProfilForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profil'),
+        title: const Text(
+          'Edit Profil',
+          style: TextStyle(
+              color: Colors.white), // Change the color of the title to white
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Form(
         key: _formKey,
@@ -89,41 +97,57 @@ class _EditProfilFormState extends State<EditProfilForm> {
                 return null;
               },
             ),
-            ElevatedButton(
-  onPressed: () async {
-    if (_formKey.currentState!.validate()) {
-      widget.profil.nom = _nameController.text;
-      widget.profil.prenom = _prenomController.text;
-      widget.profil.presentation = _presentationController.text;
-      widget.profil.email = _emailController.text;
-      if (_image != null) {
-        widget.profil.image = _image!.path; // Update the image path
-      }
-      final bool success = await ProfilService().updateProfil(widget.profil);
-      if (success) {
-        // Update was successful, navigate back to the profile list
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Profile updated successfully'),
-            backgroundColor: Colors.green,
-          ),
-        );
-        Navigator.pop(context);
-        print('onProfileUpdated callback is being called');
-        widget.onProfileUpdated(); // Notify the parent widget that the profile has been updated
-      } else {
-        // Show an error message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to update profile'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
-  },
-  child: Text('Update'),
-),
+
+            Container(
+              margin: const EdgeInsets.only(top: 15.0),
+              // Add a top margin of 10 pixels
+              child: ElevatedButton(
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    widget.profil.nom = _nameController.text;
+                    widget.profil.prenom = _prenomController.text;
+                    widget.profil.presentation = _presentationController.text;
+                    widget.profil.email = _emailController.text;
+                    if (_image != null) {
+                      widget.profil.image =
+                          _image!.path; // Update the image path
+                    }
+                    final bool success =
+                        await ProfilService().updateProfil(widget.profil);
+                    if (success) {
+                      // Update was successful, navigate back to the profile list
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Profile updated successfully'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                      Navigator.pop(context);
+                      widget
+                          .onProfileUpdated(); // Notify the parent widget that the profile has been updated
+                    } else {
+                      // Show an error message
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Failed to update profile'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  }
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Theme.of(context)
+                      .primaryColor),
+                ),
+                child: const Text(
+                  'Update',
+                  style: TextStyle(
+                      color: Colors
+                          .white),
+                ),
+              ),
+            ),
           ],
         ),
       ),
