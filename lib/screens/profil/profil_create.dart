@@ -37,13 +37,21 @@ class _ProfilCreateState extends State<ProfilCreate> {
         title: const Text("Nouveau Profil"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: Column(
+      body: ListView(
+        // child: Column(
         children: [
-          const SizedBox(height: 12),
+          const SizedBox(height: 24),
+          Text(
+            'Avatar',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
           _pictureContainer(),
           if (!_isImageSelected)
             IconButton(
-              icon: const Icon(Icons.camera_alt),
+              icon: const Icon(Icons.add_a_photo_outlined),
               onPressed: () => _showImagePickerModal(context),
             ),
           Form(
@@ -128,6 +136,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
             ),
           ),
         ],
+        // ),
       ),
     );
   }
@@ -191,7 +200,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
         _picture!,
         width: 200,
         height: 200,
-        fit: BoxFit.cover,
+        fit: BoxFit.contain,
       );
     } else {
       _isImageSelected = false;
