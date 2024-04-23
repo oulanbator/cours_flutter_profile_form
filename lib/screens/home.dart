@@ -1,7 +1,7 @@
-import 'package:cours_flutter_profile_form/model/profil.dart';
-import 'package:cours_flutter_profile_form/screens/profil/profil_create.dart';
-import 'package:cours_flutter_profile_form/service/profil_service.dart';
 import 'package:flutter/material.dart';
+import '../model/profil.dart';
+import '../service/profil_service.dart';
+import './profil/profil.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -14,8 +14,12 @@ class Home extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       // Home affiche un ListView à partir d'un FutureBuilder
-      body: FutureBuilder(
-        future: ProfilService().fetchProfils(),
+      // body: FutureBuilder(
+      // future: ProfilService().fetchProfils(),
+      body: StreamBuilder(
+        stream: Stream.periodic(
+                Duration(seconds: 1), (_) => ProfilService().fetchProfils())
+            .asyncMap((event) async => await event),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var profils = snapshot.data!;
@@ -39,7 +43,7 @@ class Home extends StatelessWidget {
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const ProfilCreate(),
+            builder: (context) => ProfilCreate(),
           ),
         ),
         tooltip: 'Nouveau profil',
@@ -51,8 +55,15 @@ class Home extends StatelessWidget {
   _listElement(BuildContext context, Profil profil) {
     return ListTile(
       title: Text("${profil.nom} ${profil.prenom}"),
-      subtitle: Text(profil.presentation),
-      onTap: () {},
+      subtitle: Text("${profil.presentation}"),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilDetails(profil: profil),
+          ),
+        );
+      },
     );
   }
 }
