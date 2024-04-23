@@ -75,7 +75,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Nouveau Profil",
           style: TextStyle(color: Colors.white), // Change the color of the title to white
         ),

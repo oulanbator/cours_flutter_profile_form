@@ -6,8 +6,9 @@ import 'image_picker_modal.dart';
 
 class ImageHandler extends StatefulWidget {
   final void Function(File) onImagePicked;
+  final String? initialImagePath;
 
-  const ImageHandler({super.key, required this.onImagePicked});
+  const ImageHandler({super.key, required this.onImagePicked, this.initialImagePath});
 
   @override
   _ImageHandlerState createState() => _ImageHandlerState();
@@ -16,6 +17,13 @@ class ImageHandler extends StatefulWidget {
 class _ImageHandlerState extends State<ImageHandler> {
   File? _image;
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialImagePath != null) {
+      _image = File(widget.initialImagePath!);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,7 +54,17 @@ class _ImageHandlerState extends State<ImageHandler> {
         width: 200.0,
         height: 200.0,
         child: ClipOval(
-          child: Image.file(_image!, fit: BoxFit.cover),
+          child: widget.initialImagePath != null &&
+                  widget.initialImagePath!.startsWith('http')
+              ? Image.network(
+                  widget.initialImagePath!,
+                  fit: BoxFit.cover,
+                  key: UniqueKey(),
+                )
+              : Image.file(
+                  _image!,
+                  fit: BoxFit.cover,
+                ),
         ),
       );
     }

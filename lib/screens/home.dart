@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Profils",
           style: TextStyle(color: Colors.white),
         ),
@@ -77,10 +77,10 @@ class _HomeState extends State<Home> {
           ),
         ),
         tooltip: 'Nouveau profil',
-        child: const Icon(Icons.add, color: Colors.white),
         // Set the color of the icon to white
         backgroundColor: Theme.of(context)
-            .primaryColor, // Set the background color of the button to the primary color of your theme
+            .primaryColor,
+        child: const Icon(Icons.add, color: Colors.white), // Set the background color of the button to the primary color of your theme
       ),
     );
   }
@@ -94,11 +94,11 @@ Widget _listElement(BuildContext context, Profil profil) {
           leading: Icon(Icons.person, color: Theme.of(context).primaryColor),
           title: Text(
             "${profil.nom} ${profil.prenom}",
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
             profil.email ?? 'No email available',
-            style: TextStyle(fontSize: 16.0),
+            style: const TextStyle(fontSize: 16.0),
           ),
           onTap: () async {
             final updated = await Navigator.push(

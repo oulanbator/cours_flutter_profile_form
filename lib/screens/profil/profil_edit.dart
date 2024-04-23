@@ -10,7 +10,7 @@ class EditProfilForm extends StatefulWidget {
   final void Function() onProfileUpdated;
   final Profil profil;
 
-  EditProfilForm(
+  const EditProfilForm(
       {Key? key, required this.profil, required this.onProfileUpdated})
       : super(key: key);
 
@@ -43,7 +43,7 @@ class _EditProfilFormState extends State<EditProfilForm> {
         title: const Text(
           'Edit Profil',
           style: TextStyle(
-              color: Colors.white), // Change the color of the title to white
+              color: Colors.white),
         ),
         backgroundColor: Theme.of(context).primaryColor,
       ),
@@ -56,10 +56,11 @@ class _EditProfilFormState extends State<EditProfilForm> {
               onImagePicked: (image) {
                 _image = image;
               },
+              initialImagePath: widget.profil.image,
             ),
             TextFormField(
               controller: _nameController,
-              decoration: InputDecoration(labelText: 'Nom'),
+              decoration: const InputDecoration(labelText: 'Nom'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter a name';
@@ -69,7 +70,7 @@ class _EditProfilFormState extends State<EditProfilForm> {
             ),
             TextFormField(
               controller: _prenomController,
-              decoration: InputDecoration(labelText: 'Prenom'),
+              decoration: const InputDecoration(labelText: 'Prenom'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter a prenom';
@@ -79,7 +80,7 @@ class _EditProfilFormState extends State<EditProfilForm> {
             ),
             TextFormField(
               controller: _presentationController,
-              decoration: InputDecoration(labelText: 'Presentation'),
+              decoration: const InputDecoration(labelText: 'Presentation'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter a presentation';
@@ -89,7 +90,7 @@ class _EditProfilFormState extends State<EditProfilForm> {
             ),
             TextFormField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter an email';

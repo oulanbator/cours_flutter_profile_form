@@ -1,3 +1,5 @@
+import 'dart:io' as io;
+
 import 'package:cours_flutter_profile_form/screens/profil/profil_edit.dart';
 import 'package:cours_flutter_profile_form/service/profil_service.dart';
 import 'package:flutter/material.dart';
@@ -20,13 +22,13 @@ class _ProfilDetailsState extends State<ProfilDetails> {
       appBar: AppBar(
         title: Text(
           '${widget.profil.nom} ${widget.profil.prenom}',
-          style: TextStyle(color: Colors.white), // Change the color of the title to white
+          style: const TextStyle(color: Colors.white), // Change the color of the title to white
         ),
         backgroundColor: Theme.of(context).primaryColor,
 
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: const Icon(Icons.edit),
             onPressed: () {
               Navigator.push(
                 context,
@@ -41,7 +43,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
             onPressed: () async {
               final bool? confirmDelete = await showDialog<bool>(
                 context: context,
@@ -93,19 +95,39 @@ class _ProfilDetailsState extends State<ProfilDetails> {
           ),
         ],
       ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                if (widget.profil.image != null)
-                  Center(
-                    child: ClipOval(
-                      child: Image.network(widget.profil.image!, fit: BoxFit.cover, width: 200, height: 200),
-                    ),
-                  ),
-                const SizedBox(height: 16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              if (widget.profil.image != null)
+                Center(
+                  child: widget.profil.image != null
+                      ? (widget.profil.image!.startsWith('http')
+                          ? ClipOval(
+                              child: Image.network(
+                                widget.profil.image!,
+                                fit: BoxFit.cover,
+                                width: 200,
+                                height: 200,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Text(
+                                      'No available image for this user');
+                                },
+                              ),
+                            )
+                          : ClipOval(
+                              child: Image.file(
+                                io.File(widget.profil.image!),
+                                fit: BoxFit.cover,
+                                width: 200,
+                                height: 200,
+                              ),
+                            ))
+                      : const Text('No available image for this user'),
+                ),
+              const SizedBox(height: 16.0),
                 const Text('Nom:', style: TextStyle(fontWeight: FontWeight.bold)),
                 Text('${widget.profil.nom}', style: const TextStyle(fontSize: 18.0)),
                 const SizedBox(height: 16.0),
