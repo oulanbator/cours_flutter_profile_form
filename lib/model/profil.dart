@@ -12,7 +12,8 @@ class Profil {
       {required this.nom,
       required this.prenom,
       required this.presentation,
-      required this.email});
+      required this.email,
+      this.image,});
 
   Profil.fromJson(Map<String, dynamic> json)
       : nom = json["nom"] as String,
@@ -21,4 +22,14 @@ class Profil {
         email = json["email"] as String,
         image = json["image"] != null ? json["image"] as String : null,
         id = json["id"] != null ? json["id"] as int : null;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'nom': nom,
+      'prenom': prenom,
+      'email': email,
+      'presentation': presentation,
+      'image': image,
+    };
+  }
 }

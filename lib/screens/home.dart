@@ -1,4 +1,5 @@
 import 'package:cours_flutter_profile_form/model/profil.dart';
+import 'package:cours_flutter_profile_form/screens/profil/details.dart';
 import 'package:cours_flutter_profile_form/screens/profil/profil_create.dart';
 import 'package:cours_flutter_profile_form/service/profil_service.dart';
 import 'package:flutter/material.dart';
@@ -49,10 +50,24 @@ class Home extends StatelessWidget {
   }
 
   _listElement(BuildContext context, Profil profil) {
-    return ListTile(
-      title: Text("${profil.nom} ${profil.prenom}"),
-      subtitle: Text(profil.presentation),
-      onTap: () {},
+    return Card(
+      elevation: 4, // Ajout d'une ombre
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10), // Ajout d'un border radius
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(8), // Ajout d'un padding
+        child: ListTile(
+          title: Text("${profil.nom} ${profil.prenom}"),
+          subtitle: Text(profil.presentation),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailsPage(profil: profil),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
