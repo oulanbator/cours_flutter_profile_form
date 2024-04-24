@@ -21,7 +21,7 @@ class _ProfilCreateState extends State<ProfilCreate> {
   void _saveProfil(Profil profil, File? image) async {
     final bool success = await ProfilService().createProfil(profil);
     if (!mounted) {
-      return; // Check if the widget is still mounted before proceeding
+      return;
     }
 
     if (success) {

@@ -152,10 +152,9 @@ class ProfilDetailsState extends State<ProfilDetails> {
                       backgroundColor: Colors.green,
                     ),
                   );
-                  Navigator.pushAndRemoveUntil(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => Home()),
-                    (route) => false,
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -178,9 +177,17 @@ class ProfilDetailsState extends State<ProfilDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Détails du Profil"),
-      ),
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text("Détails du Profil"),
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => Home()),
+                );
+              })),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

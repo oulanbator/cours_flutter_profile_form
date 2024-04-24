@@ -13,13 +13,8 @@ class Home extends StatelessWidget {
         title: const Text("Profils"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      // Home affiche un ListView à partir d'un FutureBuilder
-      // body: FutureBuilder(
-      // future: ProfilService().fetchProfils(),
-      body: StreamBuilder(
-        stream: Stream.periodic(
-                Duration(seconds: 1), (_) => ProfilService().fetchProfils())
-            .asyncMap((event) async => await event),
+      body: FutureBuilder(
+        future: ProfilService().fetchProfils(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var profils = snapshot.data!;
@@ -38,7 +33,6 @@ class Home extends StatelessWidget {
           }
         },
       ),
-      // On utilise également un FloatingActionButton pour accéder à la page de création de profil
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(
           context,

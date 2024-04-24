@@ -58,7 +58,6 @@ class ProfilService {
     if (response.statusCode == 200) {
       return true;
     } else {
-      // Vous pouvez choisir de gérer les erreurs différemment ici
       print('Erreur lors de la mise à jour du profil: ${response.body}');
       return false;
     }

@@ -5,10 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 class UploadFileService {
-  /// Renvoie l'id de l'image téléversée, ou null en cas d'échec
   Future<String?> uploadPicture(File picture, String title) async {
     final fileBytes = await picture.readAsBytes();
-    // C'est une bonne pratique d'avoir un timestamp dans le nom d'une image
     final filename = "${title}_${DateTime.now().millisecondsSinceEpoch}.jpg";
 
     final request =
