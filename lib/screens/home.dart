@@ -1,4 +1,5 @@
 import 'package:cours_flutter_profile_form/model/profil.dart';
+import 'package:cours_flutter_profile_form/screens/profil/profil_details.dart';
 import 'package:cours_flutter_profile_form/screens/profil/profil_create.dart';
 import 'package:cours_flutter_profile_form/service/profil_service.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,6 @@ class Home extends StatelessWidget {
         title: const Text("Profils"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      // Home affiche un ListView à partir d'un FutureBuilder
       body: FutureBuilder(
         future: ProfilService().fetchProfils(),
         builder: (context, snapshot) {
@@ -24,23 +24,16 @@ class Home extends StatelessWidget {
                 itemBuilder: (context, index) =>
                     _listElement(context, profils[index]));
           } else if (snapshot.hasError) {
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
+            return Center(child: Text(snapshot.error.toString()));
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),
-      // On utilise également un FloatingActionButton pour accéder à la page de création de profil
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => ProfilCreate(),
-          ),
+          MaterialPageRoute(builder: (context) => ProfilCreate()),
         ),
         tooltip: 'Nouveau profil',
         child: const Icon(Icons.add),
@@ -48,11 +41,18 @@ class Home extends StatelessWidget {
     );
   }
 
-  _listElement(BuildContext context, Profil profil) {
+  Widget _listElement(BuildContext context, Profil profil) {
     return ListTile(
       title: Text("${profil.nom} ${profil.prenom}"),
-      subtitle: Text(profil.presentation),
-      onTap: () {},
+      subtitle:
+          Text(profil.email), 
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ProfileDetails(profil: profil)),
+        );
+      },
     );
   }
 }
