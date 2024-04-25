@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cours_flutter_profile_form/model/profil.dart';
 import 'package:flutter/material.dart';
 
@@ -38,8 +40,24 @@ class ProfilDetail extends StatelessWidget {
   }
 
   Widget _getImage(Profil profil) {
+    inspect(profil);
+
     if (profil.image != null) {
-      return Image.network(profil.image!);
+      return Center(
+        child: Image.network(
+          height: 400,
+          profil.image!,
+          errorBuilder: (context, error, stackTrace) {
+            return Text(
+              "Whoops! Une erreur est survenue lors du chargement de l'image.",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.red,
+              ),
+            );
+          },
+        ),
+      );
     }
     return Container();
   }

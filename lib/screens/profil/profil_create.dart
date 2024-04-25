@@ -44,7 +44,6 @@ class _ProfilCreateState extends State<ProfilCreate> {
                 onPressed: () => _showImagePickerModal(context),
               ),
               TextFormField(
-                initialValue: "Pourra",
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Nom',
@@ -64,7 +63,6 @@ class _ProfilCreateState extends State<ProfilCreate> {
               ),
               SizedBox(height: 8),
               TextFormField(
-                initialValue: "Jérôme",
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Prénom',
@@ -84,7 +82,6 @@ class _ProfilCreateState extends State<ProfilCreate> {
               ),
               SizedBox(height: 8),
               TextFormField(
-                initialValue: "jpourra@mds.mds",
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
@@ -106,8 +103,6 @@ class _ProfilCreateState extends State<ProfilCreate> {
               SizedBox(height: 8),
               TextFormField(
                 maxLines: 5,
-                initialValue:
-                    "Bonjour, je suis bonjour, et je vous dis bonjour ! Aurevoir...",
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Présentation',
