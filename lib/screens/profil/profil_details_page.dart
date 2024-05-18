@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../../model/profil.dart';
 
 class ProfilDetailsPage extends StatelessWidget {
-  final Profil profil;
-
   const ProfilDetailsPage({super.key, required this.profil});
+
+  final Profil profil;
 
   @override
   Widget build(BuildContext context) {

@@ -40,7 +40,9 @@ class _ProfilCreateState extends State<ProfilCreate> {
         ),
         body: Center(
           child: SizedBox(
-            width: MediaQuery.of(context).size.width, // Utilisation de la largeur de l'écran
+            width: MediaQuery.of(context)
+                .size
+                .width, // Utilisation de la largeur de l'écran
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -234,7 +236,6 @@ class _ProfilCreateState extends State<ProfilCreate> {
               _picture!, "${_nomController.text}_${_prenomController.text}")
           .then((value) {
         if (value != null) {
-          print("${Constants.uriAssets}/$value");
           Profil profil = Profil(
             nom: _nomController.text,
             prenom: _prenomController.text,
